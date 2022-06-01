@@ -5515,7 +5515,8 @@ var path = window.location.origin + "/public/api/";
 var API = {
   GET_TOKEN: window.location.origin + "/api/tokens/create",
   GET_MEMBERS: path + "members",
-  POST_MEMBER: path + "members"
+  CREATE_MEMBER: path + "members/create",
+  UPDATE_MEMBER: path + "members/update"
 };
 
 /***/ }),
@@ -5574,10 +5575,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _Endpoints__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Endpoints */ "./resources/js/components/Endpoints.js");
-/* harmony import */ var _Partials_MembersForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Partials/MembersForm */ "./resources/js/components/components/HomePage/Partials/MembersForm.js");
-/* harmony import */ var _Partials_MembersTable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Partials/MembersTable */ "./resources/js/components/components/HomePage/Partials/MembersTable.js");
-/* harmony import */ var react_idle__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-idle */ "./node_modules/react-idle/es/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Partials_AddMemberForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Partials/AddMemberForm */ "./resources/js/components/components/HomePage/Partials/AddMemberForm.js");
+/* harmony import */ var _Partials_UpdateMemberForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Partials/UpdateMemberForm */ "./resources/js/components/components/HomePage/Partials/UpdateMemberForm.js");
+/* harmony import */ var _Partials_MembersTable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Partials/MembersTable */ "./resources/js/components/components/HomePage/Partials/MembersTable.js");
+/* harmony import */ var react_idle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-idle */ "./node_modules/react-idle/es/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5607,21 +5609,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 function Home() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
       members = _useState2[0],
       setMembers = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(-1),
       _useState4 = _slicedToArray(_useState3, 2),
-      isIdle = _useState4[0],
-      setIsIdle = _useState4[1];
+      editingMemberId = _useState4[0],
+      setEditingMemberId = _useState4[1];
 
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      idleKey = _useState6[0],
-      setIsIdleKey = _useState6[1];
+      isIdle = _useState6[0],
+      setIsIdle = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+      _useState8 = _slicedToArray(_useState7, 2),
+      idleKey = _useState8[0],
+      setIsIdleKey = _useState8[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getMembers();
@@ -5646,35 +5654,60 @@ function Home() {
     setMembers([].concat(_toConsumableArray(members), [newMember]));
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+  var onMemberUpdatedHandler = function onMemberUpdatedHandler(member) {
+    console.log(member);
+
+    var newMembers = _toConsumableArray(members);
+
+    newMembers[members.findIndex(function (e) {
+      return e.id == member.id;
+    })] = member;
+    setMembers(newMembers);
+    console.log(newMembers);
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
     className: "container p-3",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_idle__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_idle__WEBPACK_IMPORTED_MODULE_6__["default"], {
       timeout: 120000,
       onChange: function onChange(e) {
         setIsIdle(e.idle);
       }
-    }, idleKey), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+    }, idleKey), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
       className: "row",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
         className: "card",
         id: "main-card",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "card-body",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
             className: "container",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
               className: "row",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 className: "col",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Partials_MembersForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+                children: editingMemberId === -1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Partials_AddMemberForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
                   onMemberCreated: function onMemberCreated(m) {
                     onMemberCreatedHandler(m);
                   }
+                }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Partials_UpdateMemberForm__WEBPACK_IMPORTED_MODULE_4__["default"], {
+                  member: members.find(function (e) {
+                    return e.id == editingMemberId;
+                  }),
+                  onMemberUpdated: function onMemberUpdated(m) {
+                    onMemberUpdatedHandler(m);
+                  }
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 className: "col",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Partials_MembersTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
-                  members: members
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Partials_MembersTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
+                  members: members,
+                  onEditMember: function onEditMember(memberId) {
+                    setEditingMemberId(memberId);
+                  },
+                  onCreateMember: function onCreateMember() {
+                    setEditingMemberId(-1);
+                  }
                 })
               })]
             })
@@ -5686,6 +5719,71 @@ function Home() {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Home);
+
+/***/ }),
+
+/***/ "./resources/js/components/components/HomePage/Partials/AddMemberForm.js":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/components/HomePage/Partials/AddMemberForm.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_hot_toast__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-hot-toast */ "./node_modules/react-hot-toast/dist/react-hot-toast.esm.js");
+/* harmony import */ var _Endpoints__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Endpoints */ "./resources/js/components/Endpoints.js");
+/* harmony import */ var _MembersForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MembersForm */ "./resources/js/components/components/HomePage/Partials/MembersForm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+
+
+function AddMembersForm(props) {
+  var handleSubmit = function handleSubmit(firstName, lastName, address, dni) {
+    var data = {
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      dni: dni
+    };
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Endpoints__WEBPACK_IMPORTED_MODULE_2__.API.CREATE_MEMBER, data).then(function (res) {
+      props.onMemberCreated(res.data.data);
+      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].success(res.data.message);
+    })["catch"](function (err) {
+      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].error(err.response.data.message);
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "card",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "card-body",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "Form",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+          children: "Crear Nuevo Miembro"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_MembersForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          member: null,
+          onSubmit: function onSubmit(firstName, lastName, address, dni) {
+            return handleSubmit(firstName, lastName, address, dni);
+          }
+        })]
+      })
+    })
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddMembersForm);
 
 /***/ }),
 
@@ -5703,7 +5801,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_hot_toast__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-hot-toast */ "./node_modules/react-hot-toast/dist/react-hot-toast.esm.js");
 /* harmony import */ var _Endpoints__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Endpoints */ "./resources/js/components/Endpoints.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -5752,35 +5849,34 @@ function MembersForm(props) {
       setIsSubmitEnabled = _useState10[1];
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setData();
+  }, [props.member]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //validation
     setIsSubmitEnabled(firstName.length > 1 && lastName.length > 1 && address.length > 1 && /^\d{8}$/.test(dni));
   }, [firstName, lastName, address, dni]);
 
   var handleSubmit = function handleSubmit() {
-    var data = {
-      firstName: firstName,
-      lastName: lastName,
-      address: address,
-      dni: dni
-    };
-    axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Endpoints__WEBPACK_IMPORTED_MODULE_2__.API.POST_MEMBER, data).then(function (res) {
-      props.onMemberCreated(res.data.data);
-      react_hot_toast__WEBPACK_IMPORTED_MODULE_4__["default"].success(res.data.message);
-      resetForm();
-    })["catch"](function (err) {
-      react_hot_toast__WEBPACK_IMPORTED_MODULE_4__["default"].error(err.response.data.message);
-    });
+    props.onSubmit(firstName, lastName, address, dni);
+    setData();
   };
 
   var handleReset = function handleReset() {
-    resetForm();
+    setData();
   };
 
-  var resetForm = function resetForm() {
-    setFirstName("");
-    setLastName("");
-    setAddress("");
-    setDni("");
+  var setData = function setData() {
+    if (props.member) {
+      setFirstName(props.member.firstName);
+      setLastName(props.member.lastName);
+      setAddress(props.member.address);
+      setDni(props.member.dni);
+    } else {
+      setFirstName("");
+      setLastName("");
+      setAddress("");
+      setDni("");
+    }
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -5898,42 +5994,64 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function MembersTable(props) {
+  var editBttnClickHandle = function editBttnClickHandle(memberId) {
+    props.onEditMember(memberId);
+  };
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
     className: "card",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "card-body",
-      children: props.members.legth === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_Partials_Spinner__WEBPACK_IMPORTED_MODULE_1__["default"], {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
-        className: "table",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-              scope: "col",
-              children: "Apellido"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-              scope: "col",
-              children: "Nombre"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-              scope: "col",
-              children: "Direccion"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
-              scope: "col",
-              children: "DNI"
-            })]
-          })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tbody", {
-          children: props.members.map(function (member, index) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                children: member.firstName
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                children: member.lastName
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                children: member.address
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                children: member.dni
+      children: props.members.legth === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_Partials_Spinner__WEBPACK_IMPORTED_MODULE_1__["default"], {}) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("table", {
+          className: "table",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("thead", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                scope: "col",
+                children: "Apellido"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                scope: "col",
+                children: "Nombre"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                scope: "col",
+                children: "Direccion"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                scope: "col",
+                children: "DNI"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
+                scope: "col"
               })]
-            }, index);
-          })
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tbody", {
+            children: props.members.map(function (member, index) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                  children: member.firstName
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                  children: member.lastName
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                  children: member.address
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                  children: member.dni
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+                    className: "btn btn-sm btn-info",
+                    onClick: function onClick(e) {
+                      props.onEditMember(member.id);
+                    },
+                    children: "Editar"
+                  })
+                })]
+              }, index);
+            })
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          className: "btn btn-sm btn-primary",
+          onClick: function onClick() {
+            props.onCreateMember();
+          },
+          children: "Crear Nuevo Miembro"
         })]
       })
     })
@@ -5941,6 +6059,71 @@ function MembersTable(props) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MembersTable);
+
+/***/ }),
+
+/***/ "./resources/js/components/components/HomePage/Partials/UpdateMemberForm.js":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/components/HomePage/Partials/UpdateMemberForm.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_hot_toast__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-hot-toast */ "./node_modules/react-hot-toast/dist/react-hot-toast.esm.js");
+/* harmony import */ var _Endpoints__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Endpoints */ "./resources/js/components/Endpoints.js");
+/* harmony import */ var _MembersForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MembersForm */ "./resources/js/components/components/HomePage/Partials/MembersForm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+
+
+function UpdateMemberForm(props) {
+  var handleSubmit = function handleSubmit(firstName, lastName, address, dni) {
+    var data = {
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      dni: dni
+    };
+    axios__WEBPACK_IMPORTED_MODULE_1___default().put(_Endpoints__WEBPACK_IMPORTED_MODULE_2__.API.UPDATE_MEMBER + '/' + props.member.id, data).then(function (res) {
+      props.onMemberUpdated(res.data.data);
+      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].success(res.data.message);
+    })["catch"](function (err) {
+      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].error(err);
+    });
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    className: "card",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "card-body",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "Form",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h2", {
+          children: "Editar Miembro"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_MembersForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          member: props.member,
+          onSubmit: function onSubmit(firstName, lastName, address, dni) {
+            return handleSubmit(firstName, lastName, address, dni);
+          }
+        })]
+      })
+    })
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UpdateMemberForm);
 
 /***/ }),
 

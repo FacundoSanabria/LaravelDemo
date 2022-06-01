@@ -11,6 +11,10 @@ function MembersForm(props) {
     const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
     useEffect(()=>{ 
+        setData();
+    },[props.member]); 
+
+    useEffect(()=>{ 
         //validation
         setIsSubmitEnabled(
             firstName.length > 1 &&
@@ -21,32 +25,27 @@ function MembersForm(props) {
     },[firstName, lastName, address, dni]); 
 
     const handleSubmit = ()=>{
-        const data = {
-            firstName: firstName,
-            lastName: lastName,
-            address: address,
-            dni: dni
-        }
-        axios.post(API.POST_MEMBER, data)
-        .then(res=>{
-            props.onMemberCreated(res.data.data);
-            toast.success(res.data.message);
-            resetForm();
-        })
-        .catch(err =>{
-            toast.error(err.response.data.message);
-        })
+        props.onSubmit(firstName, lastName, address, dni);
+        setData();
     }
 
     const handleReset = ()=>{
-        resetForm();
+        setData();
     }
 
-    const resetForm = ()=>{
-        setFirstName("");
-        setLastName("");
-        setAddress("");
-        setDni("");
+    const setData = ()=>{
+        if(props.member){
+            setFirstName(props.member.firstName);
+            setLastName(props.member.lastName);
+            setAddress(props.member.address);
+            setDni(props.member.dni);
+        }
+        else{
+            setFirstName("");
+            setLastName("");
+            setAddress("");
+            setDni("");  
+        }
     }
 
     return (

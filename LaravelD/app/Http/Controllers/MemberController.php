@@ -31,12 +31,23 @@ class MemberController extends Controller
         catch(\Exception $ex){
             Log::error($ex);
             dd($ex);
+            return json_encode(['data' => $ex, 'message' => "ERROR", 'status' => 402]);
+        }
+    }
+
+    public function update(Request $request, Member $member) {
+        try{
+            (new MemberService)->update($request, $member);
             return json_encode([
-                'data' => $ex,
-                'message' => "ERROR",
-                'status' => 402
+                'data' => $member,
+                'message' => "Miembro actualizado correctamente",
+                'status' => 200
             ]);
         }
-
+        catch(\Exception $ex){
+            Log::error($ex);
+            dd($ex);
+            return json_encode(['data' => $ex, 'message' => "ERROR", 'status' => 402]);
+        }
     }
 }
