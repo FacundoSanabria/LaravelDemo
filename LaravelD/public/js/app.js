@@ -5575,8 +5575,8 @@ var axiosInterceptors = function axiosInterceptors() {
 
               // no hay token cargado, pide uno
               data = {
-                username: 'sarah',
-                password: 'connor'
+                email: 'user@gmail.com',
+                password: 'pwrd'
               };
               _context.next = 6;
               return axios__WEBPACK_IMPORTED_MODULE_0___default().post(_Endpoints__WEBPACK_IMPORTED_MODULE_1__.API.GET_TOKEN, data).then(function (res) {
@@ -5676,7 +5676,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 var path = window.location.origin + "/public/api/";
 var API = {
-  GET_TOKEN: window.location.origin + "/api/tokens/create",
+  GET_TOKEN: path + "tokens/create",
   GET_MEMBERS: path + "members",
   CREATE_MEMBER: path + "members/create",
   UPDATE_MEMBER: path + "members/update"

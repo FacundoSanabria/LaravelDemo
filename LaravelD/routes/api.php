@@ -16,9 +16,9 @@ use App\Http\Controllers\MemberController;
 |
 */
 
-Route::post('/tokens/create', function(Request $request) {return "hola";});//[AuthController::class, "createToken"]);
+Route::post('/tokens/create', [AuthController::class, "createToken"]);
 
-Route::group(['middleware'=>'JSONResponse'], function(){
+Route::group(['middleware'=>['JSONResponse', 'auth:sanctum']], function(){
     Route::get('/members', [MemberController::class, "index"]);
     Route::post('/members/create', [MemberController::class, "store"]);
     Route::match(['put', 'patch'], '/members/update/{member}', [MemberController::class, "update"]);    

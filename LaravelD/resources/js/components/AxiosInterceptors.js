@@ -11,8 +11,8 @@ export const axiosInterceptors = ()=>{
             if(!window.sessionStorage.getItem("token")){ 
                 // no hay token cargado, pide uno
                 const data = {
-                    username: 'sarah',
-                    password: 'connor',
+                    email: 'user@gmail.com',
+                    password: 'pwrd',
                 }
                 let res = await axios.post(API.GET_TOKEN, data) 
                 .then(res=>{
