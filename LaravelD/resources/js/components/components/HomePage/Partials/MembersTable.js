@@ -2,10 +2,6 @@ import React from 'react'
 import Spinner from '../../Partials/Spinner';
 
 function MembersTable(props) {
-    const editBttnClickHandle = (memberId)=>{
-        props.onEditMember(memberId);
-    }
-
     return (
         <div className="card">
             <div className="card-body">

@@ -26,11 +26,6 @@ function MembersForm(props) {
 
     const handleSubmit = ()=>{
         props.onSubmit(firstName, lastName, address, dni);
-        setData();
-    }
-
-    const handleReset = ()=>{
-        setData();
     }
 
     const setData = ()=>{
@@ -41,11 +36,15 @@ function MembersForm(props) {
             setDni(props.member.dni);
         }
         else{
-            setFirstName("");
-            setLastName("");
-            setAddress("");
-            setDni("");  
+            resetData();
         }
+    }
+
+    const resetData = ()=>{
+        setFirstName("");
+        setLastName("");
+        setAddress("");
+        setDni("");
     }
 
     return (
@@ -81,7 +80,7 @@ function MembersForm(props) {
                         />
                     </div>
                     <button type="submit" className="btn btn-danger me-2"
-                        onClick={(e)=>{handleReset()}}
+                        onClick={(e)=>{setData()}}
                         >Reset
                     </button>
                     <button type="submit" className="btn btn-primary"

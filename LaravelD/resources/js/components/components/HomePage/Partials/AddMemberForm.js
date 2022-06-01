@@ -5,6 +5,7 @@ import { API } from '../../../Endpoints';
 import MembersForm from './MembersForm';
 
 function AddMembersForm(props) {
+    const [key, setKey] = useState(0); // this is to reset MembersForm controller after a member is created
 
     const handleSubmit = (firstName, lastName, address, dni)=>{
         const data = {
@@ -17,10 +18,15 @@ function AddMembersForm(props) {
         .then(res=>{
             props.onMemberCreated(res.data.data);
             toast.success(res.data.message);
+            resetMembersForm();
         })
         .catch(err =>{
             console.log(err);
         })
+    }
+
+    const resetMembersForm = () =>{
+        setKey(key+1);
     }
 
     return (
@@ -29,6 +35,7 @@ function AddMembersForm(props) {
                 <div className="Form">
                     <h2>Crear Nuevo Miembro</h2>
                     <MembersForm
+                        key={key}
                         member={null}
                         onSubmit={(firstName, lastName, address, dni)=>handleSubmit(firstName, lastName, address, dni)}
                     />

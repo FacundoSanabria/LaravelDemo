@@ -5901,6 +5901,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Endpoints__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Endpoints */ "./resources/js/components/Endpoints.js");
 /* harmony import */ var _MembersForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MembersForm */ "./resources/js/components/components/HomePage/Partials/MembersForm.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -5910,6 +5922,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function AddMembersForm(props) {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(0),
+      _useState2 = _slicedToArray(_useState, 2),
+      key = _useState2[0],
+      setKey = _useState2[1]; // this is to reset MembersForm controller after a member is created
+
+
   var handleSubmit = function handleSubmit(firstName, lastName, address, dni) {
     var data = {
       firstName: firstName,
@@ -5920,9 +5938,14 @@ function AddMembersForm(props) {
     axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Endpoints__WEBPACK_IMPORTED_MODULE_2__.API.CREATE_MEMBER, data).then(function (res) {
       props.onMemberCreated(res.data.data);
       react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].success(res.data.message);
+      resetMembersForm();
     })["catch"](function (err) {
       console.log(err);
     });
+  };
+
+  var resetMembersForm = function resetMembersForm() {
+    setKey(key + 1);
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -5938,7 +5961,7 @@ function AddMembersForm(props) {
           onSubmit: function onSubmit(firstName, lastName, address, dni) {
             return handleSubmit(firstName, lastName, address, dni);
           }
-        })]
+        }, key)]
       })
     })
   });
@@ -6019,11 +6042,6 @@ function MembersForm(props) {
 
   var handleSubmit = function handleSubmit() {
     props.onSubmit(firstName, lastName, address, dni);
-    setData();
-  };
-
-  var handleReset = function handleReset() {
-    setData();
   };
 
   var setData = function setData() {
@@ -6033,11 +6051,15 @@ function MembersForm(props) {
       setAddress(props.member.address);
       setDni(props.member.dni);
     } else {
-      setFirstName("");
-      setLastName("");
-      setAddress("");
-      setDni("");
+      resetData();
     }
+  };
+
+  var resetData = function resetData() {
+    setFirstName("");
+    setLastName("");
+    setAddress("");
+    setDni("");
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -6114,7 +6136,7 @@ function MembersForm(props) {
           type: "submit",
           className: "btn btn-danger me-2",
           onClick: function onClick(e) {
-            handleReset();
+            setData();
           },
           children: "Reset"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
@@ -6155,10 +6177,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function MembersTable(props) {
-  var editBttnClickHandle = function editBttnClickHandle(memberId) {
-    props.onEditMember(memberId);
-  };
-
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
     className: "card",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
