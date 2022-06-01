@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     public function createToken(Request $request) {
+        dd("auth");
         $token = $request->user()->createToken($request->token_name);
         return ['token' => $token->plainTextToken];
     }

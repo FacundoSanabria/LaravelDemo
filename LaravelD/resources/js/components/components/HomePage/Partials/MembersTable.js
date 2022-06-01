@@ -12,10 +12,10 @@ function MembersTable(props) {
                         <table className="table">
                             <thead>
                                 <tr>                       
-                                    <th scope="col">First Name</th>
-                                    <th scope="col">Last Name</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">SSN</th>
+                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Direccion</th>
+                                    <th scope="col">DNI</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -26,7 +26,7 @@ function MembersTable(props) {
                                                 <td>{member.firstName}</td>
                                                 <td>{member.lastName}</td>
                                                 <td>{member.address}</td>
-                                                <td>{member.ssn}</td>
+                                                <td>{member.dni}</td>
                                             </tr>
                                         )
                                     })

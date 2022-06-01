@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\MemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,9 @@ use App\Http\Controllers\Auth\AuthController;
 |
 */
 
-Route::post('/tokens/create', [AuthController::class, "createToken"]);
+Route::post('/tokens/create', function(Request $request) {return "hola";});//[AuthController::class, "createToken"]);
+Route::get('/members', [MemberController::class, "index"]);
+Route::post('/members', [MemberController::class, "store"]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

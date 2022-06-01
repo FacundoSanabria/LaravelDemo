@@ -25,7 +25,7 @@ function Home() {
     const getMembers = () =>{
         axios.get(API.GET_MEMBERS)
         .then(res=>{
-            setMembers(res.data);
+            setMembers(res.data.data);
         })
         .catch(err=>{
             console.log(err);

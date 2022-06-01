@@ -9,9 +9,9 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/other" element={<Other/>}/>
-                <Route path="*" element={<Error404/>}/>
+                <Route path="/public" element={<Home/>}/>
+                <Route path="/public/other" element={<Other/>}/>
+                <Route path="/public/*" element={<Error404/>}/>
             </Routes>
         </BrowserRouter>
     )

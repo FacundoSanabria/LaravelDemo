@@ -5346,7 +5346,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function App() {
-  console.log("root1");
   (0,_AxiosInterceptors__WEBPACK_IMPORTED_MODULE_6__.axiosInterceptors)(); //intercepta las llamadas axios y se encarga de el manejo de los tokens
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -5358,10 +5357,8 @@ function App() {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);
-console.log("root1");
 
 if (document.getElementById('root')) {
-  console.log("root");
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(App, {}), document.getElementById('root'));
 }
 
@@ -5514,11 +5511,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "API": () => (/* binding */ API)
 /* harmony export */ });
-var path = "http://localhost:8081/";
+var path = window.location.origin + "/public/api/";
 var API = {
-  GET_TOKEN: path + "auth",
-  GET_MEMBERS: path + "api/members",
-  POST_MEMBER: path + "api/members"
+  GET_TOKEN: window.location.origin + "/api/tokens/create",
+  GET_MEMBERS: path + "members",
+  POST_MEMBER: path + "members"
 };
 
 /***/ }),
@@ -5639,7 +5636,7 @@ function Home() {
 
   var getMembers = function getMembers() {
     axios__WEBPACK_IMPORTED_MODULE_1___default().get(_Endpoints__WEBPACK_IMPORTED_MODULE_2__.API.GET_MEMBERS).then(function (res) {
-      setMembers(res.data);
+      setMembers(res.data.data);
     })["catch"](function (err) {
       console.log(err);
     });
@@ -5746,8 +5743,8 @@ function MembersForm(props) {
 
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
       _useState8 = _slicedToArray(_useState7, 2),
-      ssn = _useState8[0],
-      setSsn = _useState8[1];
+      dni = _useState8[0],
+      setDni = _useState8[1];
 
   var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState10 = _slicedToArray(_useState9, 2),
@@ -5756,19 +5753,19 @@ function MembersForm(props) {
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     //validation
-    setIsSubmitEnabled(firstName.length > 1 && lastName.length > 1 && address.length > 1 && /^\d{3}-?\d{2}-?\d{4}$/.test(ssn));
-  }, [firstName, lastName, address, ssn]);
+    setIsSubmitEnabled(firstName.length > 1 && lastName.length > 1 && address.length > 1 && /^\d{8}$/.test(dni));
+  }, [firstName, lastName, address, dni]);
 
   var handleSubmit = function handleSubmit() {
     var data = {
       firstName: firstName,
       lastName: lastName,
       address: address,
-      ssn: ssn
+      dni: dni
     };
     axios__WEBPACK_IMPORTED_MODULE_1___default().post(_Endpoints__WEBPACK_IMPORTED_MODULE_2__.API.POST_MEMBER, data).then(function (res) {
-      props.onMemberCreated(res.data);
-      react_hot_toast__WEBPACK_IMPORTED_MODULE_4__["default"].success("Member Added");
+      props.onMemberCreated(res.data.data);
+      react_hot_toast__WEBPACK_IMPORTED_MODULE_4__["default"].success(res.data.message);
       resetForm();
     })["catch"](function (err) {
       react_hot_toast__WEBPACK_IMPORTED_MODULE_4__["default"].error(err.response.data.message);
@@ -5783,7 +5780,7 @@ function MembersForm(props) {
     setFirstName("");
     setLastName("");
     setAddress("");
-    setSsn("");
+    setDni("");
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -5797,12 +5794,12 @@ function MembersForm(props) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             htmlFor: "FirstNameInput",
             className: "form-label",
-            children: "First Name:"
+            children: "Nombre:"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
             className: "form-control",
             id: "FirstNameInput",
-            placeholder: "First Name",
+            placeholder: "Nombre",
             value: firstName,
             onChange: function onChange(e) {
               setFirstName(e.target.value);
@@ -5813,12 +5810,12 @@ function MembersForm(props) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             htmlFor: "LastNameInput",
             className: "form-label",
-            children: "Last Name:"
+            children: "Apellido:"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
             className: "form-control",
             id: "LastNameInput",
-            placeholder: "Last Name",
+            placeholder: "Apellido",
             value: lastName,
             onChange: function onChange(e) {
               setLastName(e.target.value);
@@ -5829,12 +5826,12 @@ function MembersForm(props) {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
             htmlFor: "AddressInput",
             className: "form-label",
-            children: "Address:"
+            children: "Direccion:"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
             className: "form-control",
             id: "AddressInput",
-            placeholder: "Address",
+            placeholder: "Direccion",
             value: address,
             onChange: function onChange(e) {
               setAddress(e.target.value);
@@ -5843,17 +5840,17 @@ function MembersForm(props) {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "mb-3",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
-            htmlFor: "SSNInput",
+            htmlFor: "DNIInput",
             className: "form-label",
-            children: "SSN:"
+            children: "DNI:"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             type: "text",
             className: "form-control",
-            id: "SSNInput",
-            placeholder: "SSN",
-            value: ssn,
+            id: "DNIInput",
+            placeholder: "DNI",
+            value: dni,
             onChange: function onChange(e) {
-              setSsn(e.target.value);
+              setDni(e.target.value);
             }
           })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
@@ -5911,16 +5908,16 @@ function MembersTable(props) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
               scope: "col",
-              children: "First Name"
+              children: "Apellido"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
               scope: "col",
-              children: "Last Name"
+              children: "Nombre"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
               scope: "col",
-              children: "Address"
+              children: "Direccion"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("th", {
               scope: "col",
-              children: "SSN"
+              children: "DNI"
             })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("tbody", {
@@ -5933,7 +5930,7 @@ function MembersTable(props) {
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
                 children: member.address
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
-                children: member.ssn
+                children: member.dni
               })]
             }, index);
           })
@@ -6166,13 +6163,13 @@ function Router() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.BrowserRouter, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Routes, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
-        path: "/",
+        path: "/public",
         element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_HomePage_Home__WEBPACK_IMPORTED_MODULE_1__["default"], {})
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
-        path: "/other",
+        path: "/public/other",
         element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_OtherPage_Other__WEBPACK_IMPORTED_MODULE_2__["default"], {})
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
-        path: "*",
+        path: "/public/*",
         element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Error404__WEBPACK_IMPORTED_MODULE_3__["default"], {})
       })]
     })

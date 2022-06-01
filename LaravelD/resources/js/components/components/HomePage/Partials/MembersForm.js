@@ -7,7 +7,7 @@ function MembersForm(props) {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [address, setAddress] = useState("");
-    const [ssn, setSsn] = useState("");
+    const [dni, setDni] = useState("");
     const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
     useEffect(()=>{ 
@@ -16,21 +16,21 @@ function MembersForm(props) {
             firstName.length > 1 &&
             lastName.length > 1 &&
             address.length > 1 &&
-            /^\d{3}-?\d{2}-?\d{4}$/.test(ssn)
+            /^\d{8}$/.test(dni)
         );
-    },[firstName, lastName, address, ssn]); 
+    },[firstName, lastName, address, dni]); 
 
     const handleSubmit = ()=>{
         const data = {
             firstName: firstName,
             lastName: lastName,
             address: address,
-            ssn: ssn
+            dni: dni
         }
         axios.post(API.POST_MEMBER, data)
         .then(res=>{
-            props.onMemberCreated(res.data);
-            toast.success("Member Added");
+            props.onMemberCreated(res.data.data);
+            toast.success(res.data.message);
             resetForm();
         })
         .catch(err =>{
@@ -46,7 +46,7 @@ function MembersForm(props) {
         setFirstName("");
         setLastName("");
         setAddress("");
-        setSsn("");
+        setDni("");
     }
 
     return (
@@ -54,31 +54,31 @@ function MembersForm(props) {
             <div className="card-body">
                 <div className="Form">
                     <div className="mb-3">
-                        <label htmlFor="FirstNameInput" className="form-label">First Name:</label>
-                        <input type="text" className="form-control" id="FirstNameInput" placeholder="First Name"
+                        <label htmlFor="FirstNameInput" className="form-label">Nombre:</label>
+                        <input type="text" className="form-control" id="FirstNameInput" placeholder="Nombre"
                             value={firstName}
                             onChange={(e)=>{setFirstName(e.target.value)}}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="LastNameInput" className="form-label">Last Name:</label>
-                        <input type="text" className="form-control" id="LastNameInput" placeholder="Last Name"
+                        <label htmlFor="LastNameInput" className="form-label">Apellido:</label>
+                        <input type="text" className="form-control" id="LastNameInput" placeholder="Apellido"
                             value={lastName}
                             onChange={(e)=>{setLastName(e.target.value)}}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="AddressInput" className="form-label">Address:</label>
-                        <input type="text" className="form-control" id="AddressInput" placeholder="Address"
+                        <label htmlFor="AddressInput" className="form-label">Direccion:</label>
+                        <input type="text" className="form-control" id="AddressInput" placeholder="Direccion"
                             value={address}
                             onChange={(e)=>{setAddress(e.target.value)}}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="SSNInput" className="form-label">SSN:</label>
-                        <input type="text" className="form-control" id="SSNInput" placeholder="SSN"
-                            value={ssn}
-                            onChange={(e)=>{setSsn(e.target.value)}}
+                        <label htmlFor="DNIInput" className="form-label">DNI:</label>
+                        <input type="text" className="form-control" id="DNIInput" placeholder="DNI"
+                            value={dni}
+                            onChange={(e)=>{setDni(e.target.value)}}
                         />
                     </div>
                     <button type="submit" className="btn btn-danger me-2"

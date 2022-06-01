@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Route::post('api/tokens/create', function(Request $request) {return "hola";});//[AuthController::class, "createToken"]);
 
 Route::get('/', function () {
     return view('welcome');

@@ -1,8 +1,8 @@
-const path = "http://localhost:8081/"
+const path = window.location.origin+"/public/api/"
 
 export const API = {
-    GET_TOKEN: path + "auth", 
+    GET_TOKEN: window.location.origin + "/api/tokens/create", 
     
-    GET_MEMBERS: path + "api/members",
-    POST_MEMBER: path + "api/members"
+    GET_MEMBERS: path + "members",
+    POST_MEMBER: path + "members"
 }

@@ -7,7 +7,6 @@ import Main from './components/Layout/Main';
 import { axiosInterceptors } from './AxiosInterceptors';
 
 function App() {
-  console.log("root1");
   axiosInterceptors() //intercepta las llamadas axios y se encarga de el manejo de los tokens
 
   return (
@@ -22,8 +21,6 @@ function App() {
 }
 
 export default App;
-console.log("root1");
 if (document.getElementById('root')) {
-  console.log("root");
   ReactDOM.render(<App />, document.getElementById('root'));
 }
