@@ -19,7 +19,7 @@ function AddMembersForm(props) {
             toast.success(res.data.message);
         })
         .catch(err =>{
-            toast.error(err.response.data.message);
+            console.log(err);
         })
     }
 

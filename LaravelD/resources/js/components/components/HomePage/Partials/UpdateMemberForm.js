@@ -19,7 +19,7 @@ function UpdateMemberForm(props) {
             toast.success(res.data.message);
         })
         .catch(err =>{
-            toast.error(err);
+            console.log(err);
         })
     }
 

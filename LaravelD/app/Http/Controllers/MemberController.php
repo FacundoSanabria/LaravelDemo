@@ -3,51 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\MemberRequest;
 use App\Models\Member;
 use App\Services\MemberService;
 use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
-    public function index(Request $request) {
+    public function index(MemberRequest $request) {
         $members = Member::all();
-        return json_encode([
-            'data' => $members,
-            'message' => "OK",
-            'status' => 200
-        ]);
+        return [$members, "OK", 200];
     }
 
-    public function store(Request $request) {
+    public function store(MemberRequest $request) {
         try{
             $newMember = (new MemberService)->store($request, Member::class);
-            return json_encode([
-                'data' => $newMember,
-                'message' => "Miembro creado correctamente",
-                'status' => 200
-            ]);
+            return [$newMember, "Miembro creado correctamente", 200];
         }
         catch(\Exception $ex){
             Log::error($ex);
             dd($ex);
-            return json_encode(['data' => $ex, 'message' => "ERROR", 'status' => 402]);
+            return [$ex, "ERROR", 402];
         }
     }
 
-    public function update(Request $request, Member $member) {
+    public function update(MemberRequest $request, Member $member) {
         try{
             (new MemberService)->update($request, $member);
-            return json_encode([
-                'data' => $member,
-                'message' => "Miembro actualizado correctamente",
-                'status' => 200
-            ]);
+            return [$member,"Miembro actualizado correctamente",200];
         }
         catch(\Exception $ex){
             Log::error($ex);
             dd($ex);
-            return json_encode(['data' => $ex, 'message' => "ERROR", 'status' => 402]);
+            return [$ex, "ERROR", 402];
         }
     }
 }

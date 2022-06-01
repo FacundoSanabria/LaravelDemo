@@ -3202,6 +3202,169 @@ function withinMaxClamp(min, value, max) {
 
 /***/ }),
 
+/***/ "./node_modules/axios-middleware/dist/axios-middleware.esm.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/axios-middleware/dist/axios-middleware.esm.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Service": () => (/* binding */ HttpMiddlewareService),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/**
+ * axios-middleware v0.3.1
+ * (c) 2018 Émile Bergeron
+ * @license MIT
+ */
+/**
+ * @property {Array} middlewares stack
+ * @property {AxiosInstance} http
+ * @property {Function} originalAdapter
+ * @property {Number} _requestInterceptor
+ * @property {Number} _responseInterceptor
+ */
+var HttpMiddlewareService = function HttpMiddlewareService(axios) {
+    this.middlewares = [];
+
+    this.setHttp(axios);
+};
+
+/**
+ * @param {AxiosInstance} axios
+ * @returns {HttpMiddlewareService}
+ */
+HttpMiddlewareService.prototype.setHttp = function setHttp (axios) {
+        var this$1 = this;
+
+    this.unsetHttp();
+
+    if (axios) {
+        this.http = axios;
+        this.originalAdapter = axios.defaults.adapter;
+        axios.defaults.adapter = function (config) { return this$1.adapter(config); };
+    }
+    return this;
+};
+
+/**
+ * @returns {HttpMiddlewareService}
+ */
+HttpMiddlewareService.prototype.unsetHttp = function unsetHttp () {
+    if (this.http) {
+        this.http.defaults.adapter = this.originalAdapter;
+        this.http = null;
+    }
+    return this;
+};
+
+/**
+ * @param {HttpMiddleware} middleware
+ * @returns {boolean} true if the middleware is already registered.
+ */
+HttpMiddlewareService.prototype.has = function has (middleware) {
+    return this.middlewares.indexOf(middleware) > -1;
+};
+
+/**
+ * Adds a middleware or an array of middlewares to the stack.
+ * @param {HttpMiddleware|Array} middlewares
+ * @returns {HttpMiddlewareService}
+ */
+HttpMiddlewareService.prototype.register = function register (middlewares) {
+        var this$1 = this;
+
+    // eslint-disable-next-line no-param-reassign
+    if (!Array.isArray(middlewares)) { middlewares = [middlewares]; }
+
+    // Test if middlewares are registered more than once.
+    middlewares.forEach(function (middleware) {
+        if (this$1.has(middleware)) {
+            throw new Error('Middleware already registered');
+        }
+        this$1.middlewares.push(middleware);
+    });
+    return this;
+};
+
+/**
+ * Removes a middleware from the registered stack.
+ * @param {HttpMiddleware} middleware
+ * @returns {HttpMiddlewareService}
+ */
+HttpMiddlewareService.prototype.unregister = function unregister (middleware) {
+    var index = this.middlewares.indexOf(middleware);
+    if (index > -1) {
+        this.middlewares.splice(index, 1);
+    }
+    return this;
+};
+
+/**
+ * Removes all the middleware from the stack.
+ * @returns {HttpMiddlewareService}
+ */
+HttpMiddlewareService.prototype.reset = function reset () {
+    this.middlewares.length = 0;
+    return this;
+};
+
+/**
+ * @param config
+ * @returns {Promise}
+ */
+HttpMiddlewareService.prototype.adapter = function adapter (config) {
+        var this$1 = this;
+
+    var chain = [function (conf) { return this$1._onSync(this$1.originalAdapter.call(this$1.http, conf)); }, undefined];
+    var promise = Promise.resolve(config);
+
+    this.middlewares.forEach(function (middleware) {
+        chain.unshift(
+            middleware.onRequest && (function (conf) { return middleware.onRequest(conf); }),
+            middleware.onRequestError && (function (error) { return middleware.onRequestError(error); })
+        );
+    });
+
+    this.middlewares.forEach(function (middleware) {
+        chain.push(
+            middleware.onResponse && (function (response) { return middleware.onResponse(response); }),
+            middleware.onResponseError && (function (error) { return middleware.onResponseError(error); })
+        );
+    });
+
+    while (chain.length) {
+        promise = promise.then(chain.shift(), chain.shift());
+    }
+
+    return promise;
+};
+
+/**
+ * @param promise
+ * @returns {Promise}
+ * @private
+ */
+HttpMiddlewareService.prototype._onSync = function _onSync (promise) {
+    return this.middlewares.reduce(
+        function (acc, middleware) { return (middleware.onSync ? middleware.onSync(acc) : acc); },
+        promise
+    );
+};
+
+var index_esm = {
+    Service: HttpMiddlewareService,
+    version: '0.3.1',
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (index_esm);
+
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -5760,7 +5923,7 @@ function AddMembersForm(props) {
       props.onMemberCreated(res.data.data);
       react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].success(res.data.message);
     })["catch"](function (err) {
-      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].error(err.response.data.message);
+      console.log(err);
     });
   };
 
@@ -6100,7 +6263,7 @@ function UpdateMemberForm(props) {
       props.onMemberUpdated(res.data.data);
       react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].success(res.data.message);
     })["catch"](function (err) {
-      react_hot_toast__WEBPACK_IMPORTED_MODULE_5__["default"].error(err);
+      console.log(err);
     });
   };
 
@@ -6222,24 +6385,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_hot_toast__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-hot-toast */ "./node_modules/react-hot-toast/dist/react-hot-toast.esm.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
-
-
 function Main(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
     id: "main",
     className: "main",
     style: {
       'minHeight': 'calc(100vh - 112px)'
     },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_hot_toast__WEBPACK_IMPORTED_MODULE_2__.Toaster, {
-      position: "bottom-right",
-      reverseOrder: "false"
-    }), props.children]
+    children: props.children
   });
 }
 
@@ -6328,14 +6485,54 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
-/* harmony import */ var _HomePage_Home__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./HomePage/Home */ "./resources/js/components/components/HomePage/Home.js");
-/* harmony import */ var _OtherPage_Other__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./OtherPage/Other */ "./resources/js/components/components/OtherPage/Other.js");
-/* harmony import */ var _Error404__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Error404 */ "./resources/js/components/components/Error404.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_hot_toast__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-hot-toast */ "./node_modules/react-hot-toast/dist/react-hot-toast.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var axios_middleware__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios-middleware */ "./node_modules/axios-middleware/dist/axios-middleware.esm.js");
+/* harmony import */ var _HomePage_Home__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./HomePage/Home */ "./resources/js/components/components/HomePage/Home.js");
+/* harmony import */ var _OtherPage_Other__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./OtherPage/Other */ "./resources/js/components/components/OtherPage/Other.js");
+/* harmony import */ var _Error404__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Error404 */ "./resources/js/components/components/Error404.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
+ //Middleware 
+
+
+
+var service = new axios_middleware__WEBPACK_IMPORTED_MODULE_2__.Service((axios__WEBPACK_IMPORTED_MODULE_1___default()));
+service.register({
+  onRequest: function onRequest(config) {
+    // console.log('onRequest', config);
+    return config;
+  },
+  onRequestError: function onRequestError(error) {// console.log('onRequestError', error)
+  },
+  onSync: function onSync(promise) {
+    // console.log('onSync', promise);
+    return promise;
+  },
+  onResponse: function onResponse(response) {
+    // console.log('onResponse', response);
+    return response;
+  },
+  onResponseError: function onResponseError(error) {
+    if (error.response.status == 422) {
+      var data = JSON.parse(error.response.data);
+      var errors = Object.values(data.errors);
+      errors.forEach(function (e) {
+        e.forEach(function (txt) {
+          react_hot_toast__WEBPACK_IMPORTED_MODULE_3__["default"].error(txt);
+        });
+      });
+    }
+
+    if (error.response.status == 403) {
+      window.location.href = window.location.origin + "/admin/unauthorized";
+    }
+  }
+});
 
 
 
@@ -6343,19 +6540,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Router() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.BrowserRouter, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Routes, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.BrowserRouter, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_hot_toast__WEBPACK_IMPORTED_MODULE_3__.Toaster, {
+      position: "bottom-right",
+      reverseOrder: "false"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Routes, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
         path: "/public",
-        element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_HomePage_Home__WEBPACK_IMPORTED_MODULE_1__["default"], {})
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
+        element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_HomePage_Home__WEBPACK_IMPORTED_MODULE_4__["default"], {})
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
         path: "/public/other",
-        element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_OtherPage_Other__WEBPACK_IMPORTED_MODULE_2__["default"], {})
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
+        element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_OtherPage_Other__WEBPACK_IMPORTED_MODULE_5__["default"], {})
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Route, {
         path: "/public/*",
-        element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_Error404__WEBPACK_IMPORTED_MODULE_3__["default"], {})
+        element: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_Error404__WEBPACK_IMPORTED_MODULE_6__["default"], {})
       })]
-    })
+    })]
   });
 }
 
