@@ -5818,15 +5818,13 @@ function Home() {
   };
 
   var onMemberUpdatedHandler = function onMemberUpdatedHandler(member) {
-    console.log(member);
-
     var newMembers = _toConsumableArray(members);
 
     newMembers[members.findIndex(function (e) {
       return e.id == member.id;
     })] = member;
     setMembers(newMembers);
-    console.log(newMembers);
+    setEditingMemberId(-1);
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -11607,7 +11605,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#header{\r\n    background-color: #2f2f2f;\r\n}\r\n#header a{\r\n    color: #dadada;\r\n    font-weight: 700;\r\n}\r\n\r\n#main-card{\r\n    background-color: #fbfbfb;\r\n}\r\n\r\n\r\n#main{\r\n    background-color:  #bac5d4\r\n}\r\n\r\nfooter{\r\n    background-color: #2f2f2f;\r\n    color: #dadada;\r\n    height: 55px;\r\n    vertical-align: center;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "#header{\r\n    background-color: #2f2f2f;\r\n}\r\n#header a{\r\n    color: #dadada;\r\n    font-weight: 700;\r\n}\r\n\r\n#main-card{\r\n    background-color: #fbfbfb;\r\n}\r\n\r\n\r\n#main{\r\n    background-color:  #bac5d4\r\n}\r\n\r\nfooter{\r\n    background-color: #2f2f2f;\r\n    color: #dadada;\r\n    height: 56px;\r\n    vertical-align: center;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

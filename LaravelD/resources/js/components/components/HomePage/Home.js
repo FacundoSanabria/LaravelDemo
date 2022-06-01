@@ -39,11 +39,10 @@ function Home() {
     }
 
     const onMemberUpdatedHandler = (member) =>{
-        console.log(member);
         const newMembers = [...members];
         newMembers[members.findIndex(e=>e.id==member.id)] = member
         setMembers(newMembers);
-        console.log(newMembers);
+        setEditingMemberId(-1)
     }
 
     return (
