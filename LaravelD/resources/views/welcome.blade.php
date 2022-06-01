@@ -27,7 +27,7 @@
         <!-- esto es para que ande react -->
         <script defer src="js/app.js"></script>
     </head>
-    <body class="antialiased">
+    <body class="antialiased" style="min-width: 101%">
         <div class="content-box">
             <div id="example"></div>
             <div id="root"></div>
