@@ -1,0 +1,23 @@
+#header{
+    background-color: #2f2f2f;
+}
+#header a{
+    color: #dadada;
+    font-weight: 700;
+}
+
+#main-card{
+    background-color: #fbfbfb;
+}
+
+
+#main{
+    background-color:  #bac5d4
+}
+
+footer{
+    background-color: #2f2f2f;
+    color: #dadada;
+    height: 56px;
+    vertical-align: center;
+}
